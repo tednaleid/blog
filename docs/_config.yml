@@ -1,0 +1,13 @@
+title: Ted Naleid's Notes
+twitter_username: tednaleid
+github_username: tednaleid
+gems:
+  - jekyll-sitemap
+  - jekyll-feed
+theme: minima
+google_analytics: UA-103670539-1
+
+
+header_pages:
+  - presentations.md
+  - contact.md
