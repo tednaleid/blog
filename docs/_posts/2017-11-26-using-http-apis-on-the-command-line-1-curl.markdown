@@ -1,15 +1,15 @@
 ---
-title: "Using RESTful HTTP APIs on the Command Line - Part 1 - curl"
+title: "Using HTTP APIs on the Command Line - Part 1 - curl"
 ---
 
 This is part 1 of a series of posts on Using HTTP APIs on the command line:
 - curl - this post
-- [jq]() - TBD
+- [jq](/2017/12/17/using-http-apis-on-the-command-line-2-jq.html) - a command-line stream editor for JSON
 - [ganda (with a little awk)]() - TBD
 
 ## What is `curl`?
 
-`curl` is a command line app that lets you make requests (http, as well as a variety of other types) and view/save the results.
+`curl` is a command-line app that lets you make requests (http, as well as a variety of other types) and view/save the results.
 
 It has pretty [good docs on the web](https://ec.haxx.se/usingcurl.html) and an extensive `man curl` page.
 
@@ -36,7 +36,7 @@ I can see why those tools are useful for others, but this is why I use `curl` ov
 
 ## `curl` usage
 
-`curl` is used on the command line, so I always use double-quotes to encode my url so that I do not have to escape any special characters (like `?` and `&`) that have other meanings in the shell.
+`curl` is used on the command-line, so I always use double-quotes to encode my url so that I do not have to escape any special characters (like `?` and `&`) that have other meanings in the shell.
 
 ```
 curl "http://httpbin.org/response-headers?key=val"
