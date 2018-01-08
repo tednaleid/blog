@@ -1,5 +1,6 @@
 ---
 title: Batch Import Performance with Grails and MySQL
+redirect_from: "/blog/2009/10/01/batch-import-performance-with-grails-and-mysql"
 ---
 I've spent some time over the last couple of weeks working on a Grails service that allows us to import new records into our MySQL database.
 

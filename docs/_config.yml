@@ -4,6 +4,7 @@ github_username: tednaleid
 gems:
   - jekyll-sitemap
   - jekyll-feed
+  - jekyll-redirect-from
 theme: minima
 google_analytics: UA-103670539-1
 

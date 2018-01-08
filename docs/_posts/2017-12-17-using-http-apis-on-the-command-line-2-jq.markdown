@@ -251,7 +251,7 @@ The `..` selector will find all of the values under the current selection.
 
 
 
-(still to document, post will be updated)
+## still to document, post will be updated
 
 
 jq examples:

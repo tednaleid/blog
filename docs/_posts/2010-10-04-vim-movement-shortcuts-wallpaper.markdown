@@ -1,5 +1,6 @@
 ---
 title: Vim Movement Shortcuts Wallpaper
+redirect_from: "/blog/2010/10/04/vim-movement-shortcuts-wallpaper"
 ---
 I've recently moved back to vim (actually MacVim) after a 5 year hiatus using TextMate.  A big part of that move was inspired by Steve Losh's recent post <a href="http://stevelosh.com/blog/2010/09/coming-home-to-vim/">Coming Home to Vim</a> which has a number of really great tips.
 

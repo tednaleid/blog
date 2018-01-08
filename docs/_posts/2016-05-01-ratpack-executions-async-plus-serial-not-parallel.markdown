@@ -1,5 +1,6 @@
 ---
 title: "Ratpack Executions: Async + Serial, not Parallel"
+redirect_from: "/blog/2016/05/01/ratpack-executions-async-plus-serial-not-parallel"
 ---
 
 Developers familiar with <a href="http://ratpack.io">Ratpack</a> know that it is a non-blocking and asynchronous framework that's built on top of <a href="http://netty.io">Netty</a>.  It uses a small pool of "compute" threads (by default `2 * <# of CPUs>`) to do all of the non-blocking processing of thousands of requests a second.
