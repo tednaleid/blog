@@ -21,19 +21,19 @@ There is also an online "playground" called [jqplay](https://jqplay.org/) where 
 
 Quick install instructions:
 
-OSX:
+OSX, use [homebrew](https://brew.sh/)
 
-Use [homebrew](https://brew.sh/): `brew install jq`
+    brew install jq
 
 Debian/Ubuntu Linux:
 
-`sudo apt-get install jq`
+    sudo apt-get install jq
 
 Fedora:
 
-`sudo dnf install jq`
+    sudo dnf install jq
 
-Full instructions, including downloadable binaries for all platforms, are [on the jq site](https://stedolan.github.io/jq/download/).
+Full instructions, including downloadable binaries for all platforms, are [on the `jq` site](https://stedolan.github.io/jq/download/).
 
 
 ## `jq` basics
