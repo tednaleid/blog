@@ -5,7 +5,7 @@ title: "Using HTTP APIs on the Command Line - Part 2 - jq"
 This is part 2 of a series of posts on Using HTTP APIs on the command line:
 - [curl](/2017/11/26/using-http-apis-on-the-command-line-1-curl.html) - making requests on the command line
 - [jq](/2017/12/17/using-http-apis-on-the-command-line-2-jq.html) - this post
-- [ganda (with a little awk)]() - TBD
+- [ganda (with a little awk)](/2018/04/04/using-http-apis-on-the-command-line-3-ganda.html) - using `ganda` to make _many_ requests
 
 ## What is `jq`?
 
@@ -635,3 +635,8 @@ There are _many_ features and uses of `jq` that I haven't documented here, I've 
 - [Cookbook](https://github.com/stedolan/jq/wiki/Cookbook)
 - [Advanced Topics](https://github.com/stedolan/jq/wiki/Advanced-Topics)
 - [Avoiding Pitfalls](https://github.com/stedolan/jq/wiki/How-to:-Avoid-Pitfalls)
+
+### Using `jq` across _many_ http requests
+
+If you want to see how you can map over many http requests and process the results with `jq` check out the [next blog post in this series](/2018/04/04/using-http-apis-on-the-command-line-3-ganda.html).
+

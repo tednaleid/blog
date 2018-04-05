@@ -5,7 +5,8 @@ title: "Using HTTP APIs on the Command Line - Part 1 - curl"
 This is part 1 of a series of posts on Using HTTP APIs on the command line:
 - curl - this post
 - [jq](/2017/12/17/using-http-apis-on-the-command-line-2-jq.html) - a command-line stream editor for JSON
-- [ganda (with a little awk)]() - TBD
+- [ganda (with a little awk)](/2018/04/04/using-http-apis-on-the-command-line-3-ganda.html) - using `ganda` to make _many_ requests
+
 
 ## What is `curl`?
 
@@ -291,5 +292,5 @@ curl -s -H "Authorization: Bearer <mytoken>" "http://httpbin.org/headers" |\
 ```
 
 
-For JSON output, grep is often a bad tool to use to find the information you want, the [next blog post details how `jq` can be used to parse and manipulate JSON]().
+For JSON output, grep is often a bad tool to use to find the information you want, the [next blog post details how `jq` can be used to parse and manipulate JSON](/2017/12/17/using-http-apis-on-the-command-line-2-jq.html).
 
