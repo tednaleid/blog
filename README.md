@@ -14,6 +14,8 @@ config is in docs/_config.yml
 
 To create a new post, create a new markdown file in docs/_posts/ with a header similar to other existing posts
 
+Posts won't show up if they are dated in the future.
+
 
 
 # Testing/Running Locally
@@ -41,10 +43,10 @@ Now install the gems for jekyll and webrick
 bundle install
 ```
 
-and you should be able to serve now:
+and you should be able to serve now (with livereload support built-in):
 
 ```shell
-bundle exec jekyll serve
+bundle exec jekyll serve --livereload
 ```
 
 Then go to http://127.0.0.1:4000

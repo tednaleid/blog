@@ -1,7 +1,7 @@
 title: Ted Naleid's Notes
 twitter_username: tednaleid
 github_username: tednaleid
-gems:
+plugins:
   - jekyll-sitemap
   - jekyll-feed
   - jekyll-redirect-from
