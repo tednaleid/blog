@@ -1,5 +1,5 @@
 ---
-title: Kafka Topic Partitioning and Replication 
+title: Kafka Topic Partitioning and Replication Critical Configuration Tips
 ---
 
 #### tl;dr - Kafka configs you should consider using
@@ -22,6 +22,14 @@ title: Kafka Topic Partitioning and Replication
 
 There are caveats for all of these, read on for further discussion.
 
+## Who is this post intended for?
+
+This is the information about understanding Kafka partitioning and replication that I've been trying to search for
+the last couple of years.  I finally stopped searching and [read the source code](https://github.com/apache/kafka/tree/trunk/core/src/main).
+
+This post assumes quite a bit of familiarity with how Kafka works at the 10k foot level. It dives into the details
+and describes which config settings you should be looking at when tuning your system.
+
 ## How are Kafka Topics structured?
 
 Kafka topics hold a series of ordered events (also called records). The `mango` record is the oldest and `pear` is 
@@ -35,8 +43,8 @@ learning more about if you want to be able to reason about how your data will fl
 
 ### Topic Partitions
 
-A topic is split into one or more partitions, with each partition having approximately the same fraction
-of records on it.  Partitions are zero-based, so there will always be a partition `0`.
+A topic is split into one or more zero-based partitions, with each partition having approximately the same fraction
+of records on it.
 
 It is the Kafka producer's job to create new records and decide which partition a record should go to.  It uses a
 [partitioning strategy](https://kafka.apache.org/documentation/#producerconfigs_partitioner.class)
@@ -46,8 +54,12 @@ The
 [default partitioner](https://github.com/apache/kafka/blob/2.8/clients/src/main/java/org/apache/kafka/clients/producer/internals/DefaultPartitioner.java#L25-L33)
 uses this algorithm:
 
+1. if the user assigned an explicit partition, use it
+2. else if the record has a key, use the key's hash to determine the partition
+3. else add the record to a batch and send it to a random partition
 
-#### 1. Did the producer assign an explicit partition to the record?
+### Default Partitioner Algorithm Details
+#### 1. If the user assigned an explicit partition, use it 
     
 If the producer has manually assigned a record to a partition, it will honor that choice.  If explicit partitions are used, it 
 is the producer's responsibility to ensure that records are balanced across the partitions.
@@ -75,7 +87,8 @@ commit value at `offset=5497`, and another for partition `0` with a value of `of
 [my-group-id-39,fruit-prices,0]::OffsetAndMetadata(offset=3550, leaderEpoch=Optional.empty, metadata=, commitTimestamp=1619425553694, expireTimestamp=None)
 ```
 
-#### 2. Does the record have a `key`?
+#### 2. else if the record has a key, use the key's hash to determine the partition
+
 
 If the record hasn't been assigned an explicit partition, but it does have a key, then the partition is determined by 
 calculating the [`murmur2` 32-bit hash of the key](https://github.com/apache/kafka/blob/2.8/clients/src/main/java/org/apache/kafka/clients/producer/internals/DefaultPartitioner.java#L71)
@@ -99,7 +112,11 @@ that offset.
 Example: The record with the key `"lime"` hashes to partition `0`.  It was assigned an offset of `1` because it is
 the second record on that partition.
 
-#### 3. Otherwise, each batch of records will be assigned to a random partition
+Adding a `key` to a record will ensure that all messages with the same key will be sent to the same partition.  This
+is useful for consumers who only care about a subset of the data.  It also ensures that there aren't race conditions
+when updating a value or, if you're using a compacted topic, that the latest value is preserved.
+
+#### 3. else add the record to a batch and send it to a random partition
 
 If the record wasn't assigned an explicit partition and it doesn't have a key, it will be added to a batch of records 
 that will be [sent to a random partition](https://github.com/apache/kafka/blob/2.8/clients/src/main/java/org/apache/kafka/clients/producer/internals/StickyPartitionCache.java#L60-L63).
@@ -151,8 +168,7 @@ The batch record header always takes up [61 bytes](https://github.com/apache/kaf
 So if your average compressed record (including key, value, and headers) is 500 bytes and you use the `batch.size` of
 `16384`, you can expect to have 32 records in the average batch.
 
-If your average compressed record takes up 32KB, every "batch" will be a record by itself.  You might want to take a 
-look at that.
+If your average compressed record takes up 32KB, every "batch" will be a record by itself.  
 
 #### Batch Config Details 
 
@@ -171,6 +187,9 @@ garbage collection efficiency reasons.
 If a batch isn't full it will wait up to [`linger.ms`](https://kafka.apache.org/documentation/#producerconfigs_linger.ms) 
 milliseconds (default `0`) after the last message has been added to the batch before sending it. `linger.ms` is not enabled by 
 default, but can help reduce the number of requests sent without much additional latency if you set it to a low value.
+
+So if your average compressed record is 32KB, you'll want to test out significantly increasing `batch.size` by  
+10-20x and possibly also `buffer.memory` depending on how many unique topic partitions you could produce to.
 
 ### What Configs Limit the Maximum Record Size?
 
@@ -232,7 +251,7 @@ the data is replicated those records could be lost.
 Our `fruit-prices` topic has `3` partitions, a `replication-factor` of `3`, `min.insync.replicas=2` and a producer using 
 `acks=all`.
 
-#### Happy - all replicas are in-sync with the leader
+#### Scenario 1: all replicas are in-sync with the leader
 
 When producing a record, it will be sent to the leader (Broker 101) as well as both in-sync replicas 
 (Brokers 100 and 104).
@@ -253,7 +272,7 @@ Topic: user-events  Partition: 2	Leader: 102	Replicas: 102,100,103	Isr: 102,100,
 
 The `Isr` ("In Sync Replicas") column shows that all replicas are in-sync with the leader of the partition.
 
-#### Caution - only one replica is in-sync with the leader
+#### Scenario 2: only one replica is in-sync with the leader
 
 If one broker becomes unreachable, or is lagging behind for some reason, you're still able to produce to the topic and
 consume from it.
@@ -280,7 +299,7 @@ The `Replicas` column shows that there are three replicas, but only 2 `Isr` (In 
 104 is a replica, but it is not in-sync.  It is likely trying to catch up, but this is a signal that the broker should 
 be looked at to see why it is not caught up if it lasts more than a minute or two.
 
-#### Unhappy - no replicas in-sync with the leader
+#### Scenario 3: no replicas in-sync with the leader
 
 No replicas are currently in-sync with the leader, all producers are halted because the cluster cannot meet 
 the `min.insync.replicas=2` setting.
