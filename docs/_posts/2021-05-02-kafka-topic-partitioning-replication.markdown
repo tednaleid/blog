@@ -12,7 +12,7 @@ title: Kafka Topic Partitioning and Replication Critical Configuration Tips
 ##### Producer Configs
 - `acks=all` (default: `1`) 
 - `compression.type=lz4` (default: `none`)
-- `linger.ms=10` (default: `0`)
+- `linger.ms=100` (default: `0`, Kafka Streams uses `100` ms)
 - `max.request.size=4194304` (4MB, default: `1048576` - 1MB)
 - `batch.size` - increase for larger batches or bigger messages (default: `16384` - 16KB)
 - `buffer.memory` - increase for high-throughput apps (default: `33554432` - 32MB) 
@@ -219,9 +219,10 @@ With these settings, if record batch `A` fails and is retried, it could arrive a
 saved and acknowledged by the broker.
 
 Some options for preventing this:
-1. Set `max.in.flight.requests.per.connection=1` to allow only one batch to be sent to a broker at a time
+1. Set `max.in.flight.requests.per.connection=1` to allow only one batch to be sent to a broker at a time[^guaranteemessageorder].
 2. Set `retries=0` and crash before committing if a publish fails.  On restart, the messages will be tried again.
 3. Keep track of the offset assigned to records in the producer's `send` callback and crash before committing if they are ever out of order.  On restart, the messages will be sent again.
+4. Turn on idempotent messages with [`enable.idempotence=true`](https://kafka.apache.org/documentation/#producerconfigs_enable.idempotence) or `processing.guarantee=exactly_once` [with Kafka Streams](https://www.confluent.io/blog/enabling-exactly-once-kafka-streams/).  This adds transactions and ["exactly once" delivery of messages](https://cwiki.apache.org/confluence/display/KAFKA/KIP-447%3A+Producer+scalability+for+exactly+once+semantics) which have their own costs.
 
 Option #1 is probably the easiest, though it's worth testing the effect of your system's throughput.
 
@@ -330,4 +331,6 @@ so it will resend the record batch.
 
 [^kafkapartitions]: I've created a [simple kotlin script](https://github.com/tednaleid/kotlin-scripts/blob/master/scripts/kafkapartition.main.kts) that can determine the partition for a given key.
 [^gorydetailsmaxrequestsize]: If you want the gory details for where the producer calculates the uncompressed size of a record look at the [`KafkaProducer`](https://github.com/apache/kafka/blob/2.8/clients/src/main/java/org/apache/kafka/clients/producer/KafkaProducer.java#L937-L939) and [`AbstractRecords`](https://github.com/apache/kafka/blob/2.8/clients/src/main/java/org/apache/kafka/common/record/AbstractRecords.java#L135) classes.
+[^guaranteemessageorder]: Kafka translates this [setting to `guaranteeMessageOrder` on the `Sender` class](https://github.com/apache/kafka/blob/2.8/clients/src/main/java/org/apache/kafka/clients/producer/KafkaProducer.java#L475) and will "mute" other partitions from being sent while that one is in-flight.
 [^rackawareconsumer]: One caveat to this is if you're using Kafka's [rudimentary rack awareness feature](https://kafka.apache.org/documentation/#basic_ops_racks) with this, it is possible for the read to [come from a replica](https://cwiki.apache.org/confluence/display/KAFKA/KIP-392%3A+Allow+consumers+to+fetch+from+closest+replica) where the [`broker.rack`](https://kafka.apache.org/documentation.html#brokerconfigs_broker.rack) matches the [`client.rack`](https://kafka.apache.org/documentation.html#consumerconfigs_client.rack).
+
