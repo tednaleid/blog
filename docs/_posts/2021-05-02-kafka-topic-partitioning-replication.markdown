@@ -14,7 +14,7 @@ title: Kafka Topic Partitioning and Replication Critical Configuration Tips
 - `compression.type=lz4` (default: `none`)
 - `linger.ms=100` (default: `0`, Kafka Streams uses `100` ms)
 - `max.request.size=4194304` (4MB, default: `1048576` - 1MB)
-- `batch.size=1048576` - up to `message.max.bytes` for the topic (default: `16384` - 16KB)
+- `batch.size=972800` - ~95% of topic's `message.max.bytes` (default: `16384` - 16KB)
 - `buffer.memory=67108864` - increase for high-throughput apps (default: `33554432` - 32MB) 
 - if order matters
   - add a `key` to all of your messages
@@ -195,10 +195,10 @@ If you increase `batch.size`, you'll want to be sure to use compression.  I beli
 `compression.type` of `none`. In my testing, larger batches left at `none` do far worse, but with compression on
 can do much better.
 
-The maximum value of `batch.size` should be no larger than [`message.max.bytes`](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes)
+The maximum value of `batch.size` should be no larger than about 95% of [`message.max.bytes`](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes)
 for the topic/broker.  Values much larger than this risk being rejected by the broker and sent back to the producer
-to split up and resend in smaller batches.
-
+to split up and resend in smaller batches.  If a broker has 1MiB (1024*1024) `message.max.bytes`, I suggest trying 
+`batch.size=972800` (`1024*950`, 950KiB) to allow large batches without them being too large.
 
 ### What Configs Limit the Maximum Record Size?
 
