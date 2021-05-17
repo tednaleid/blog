@@ -14,7 +14,7 @@ title: Kafka Topic Partitioning and Replication Critical Configuration Tips
 - `compression.type=lz4` (default: `none`)
 - `linger.ms=100` (default: `0`, Kafka Streams uses `100` ms)
 - `max.request.size=4194304` (4MB, default: `1048576` - 1MB)
-- `batch.size=1048576` - up to `max.request.size` for the topic (default: `16384` - 16KB)
+- `batch.size=1048576` - up to `message.max.bytes` for the topic (default: `16384` - 16KB)
 - `buffer.memory=67108864` - increase for high-throughput apps (default: `33554432` - 32MB) 
 - if order matters
   - add a `key` to all of your messages
