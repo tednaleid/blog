@@ -175,7 +175,23 @@ If your average compressed record takes up 32KB, every "batch" will be a record 
 A producer will batch up to [`batch.size`](https://kafka.apache.org/documentation/#producerconfigs_batch.size) bytes 
 (default `16384` - 16KB) of compressed records (minus a little overhead for the batch's metadata) per topic partition.
 
-If a single compressed message is larger than `batch.size`, that record will be in a batch by itself.
+When creating a new batch, Kafka will allocate a byte buffer for that batch that is the larger of `batch.size` (default `16384`)
+or the _uncompressed_ size of the record it wants to add to the batch.  It then compresses the record and adds it to 
+the batch.
+
+When the next record comes in, if that batch hasn't been sent yet, it will see if the existing batch [has room for](https://github.com/apache/kafka/blob/2.8/clients/src/main/java/org/apache/kafka/common/record/MemoryRecordsBuilder.java#L797-L801)
+the record by seeing if the _uncompressed_ record will fit into the batch.  If there isn't room, it will close that 
+batch and allocate a new buffer with this
+
+If there is room, it will compress and add the record to the batch and leave the batch open for new records to be added.
+
+This means that if all of your messages are 32K uncompressed, every batch you have will have a single record in it.  
+If you increase the `batch.size` to 32K, you will still only have a single record in each batch.  *To get 2 or more 
+records in a batch, your `batch.size` must be greater than `(uncompressed message size) + (prevously compressed message size)`.*
+
+In testing messages that were 750KiB in size, I've gotten 3x the performance by increasing my `batch.size` from 750K to
+950K because compression was allowing 2 compressed messages to fit in the batch and still seeing enough room to add
+one more 750K message.
 
 Additionally, the producer will allocate a pool of [`buffer.memory`](https://kafka.apache.org/documentation/#producerconfigs_buffer.memory)
 (default: `33554432` - 32MB) bytes that is shared for all active and in-flight compressed record batches across every 
