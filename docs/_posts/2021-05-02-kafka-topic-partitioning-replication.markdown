@@ -68,7 +68,8 @@ This is useful when you want to partition your records using something other tha
 
 Kafka [uses this strategy internally on its `__consumer_offsets` topic](https://docs.confluent.io/platform/current/clients/consumer.html#consumer-groups) 
 that tracks the state all consumers' `group.id`s. Messages are keyed on `group.id` + topic name + partition, but are 
-partitioned on just the `groupId`.  This allows new consumers to subscribe to a single partition that will hold all 
+partitioned on just the `groupId` ([using `String.hashCode()`](https://github.com/apache/kafka/blob/2.8/core/src/main/scala/kafka/coordinator/group/GroupMetadataManager.scala#L188)).  
+This allows new consumers to subscribe to a single partition that will hold all 
 updates for their `group.id`.
 
 Example command to see data on the `__consumer_offsets` topic
@@ -79,12 +80,12 @@ kafka-console-consumer --bootstrap-server localhost:9092 --topic __consumer_offs
 ```
 
 Here are two example output lines for from `__consumer_offsets` partition `0`. It shows two records
-for the `my-group-id-39` group id on the `fruit-prices` topic.  One for partition `1` with a 
+for the `my-group-id-14` group id on the `fruit-prices` topic.  One for partition `1` with a 
 commit value at `offset=5497`, and another for partition `0` with a value of `offset=3550`.
 
 ```
-[my-group-id-39,fruit-prices,1]::OffsetAndMetadata(offset=5497, leaderEpoch=Optional.empty, metadata=, commitTimestamp=1619425537926, expireTimestamp=None)
-[my-group-id-39,fruit-prices,0]::OffsetAndMetadata(offset=3550, leaderEpoch=Optional.empty, metadata=, commitTimestamp=1619425553694, expireTimestamp=None)
+[my-group-id-14,fruit-prices,1]::OffsetAndMetadata(offset=5497, leaderEpoch=Optional.empty, metadata=, commitTimestamp=1619425537926, expireTimestamp=None)
+[my-group-id-14,fruit-prices,0]::OffsetAndMetadata(offset=3550, leaderEpoch=Optional.empty, metadata=, commitTimestamp=1619425553694, expireTimestamp=None)
 ```
 
 #### 2. else if the record has a key, use the key's hash to determine the partition
