@@ -32,8 +32,8 @@ and describes which config settings you should be looking at when tuning your sy
 
 ## How are Kafka Topics structured?
 
-Kafka topics hold a series of ordered events (also called records). The `mango` record is the oldest and `pear` is 
-the newest.  Any new records would be added after `pear`.  
+Kafka topics hold a series of ordered events (also called records). The `mango` record is the oldest and `cherry` is 
+the newest.  Any new records would be added after `cherry`.  
 
 ![Kafka Topic](/images/2021/05/kafka_topic.png "Kafka Topic"){: .center-image }
 
@@ -93,15 +93,16 @@ commit value at `offset=5497`, and another for partition `0` with a value of `of
 
 If the record hasn't been assigned an explicit partition, but it does have a key, then the partition is determined by 
 calculating the [`murmur2` 32-bit hash of the key](https://github.com/apache/kafka/blob/2.8/clients/src/main/java/org/apache/kafka/clients/producer/internals/DefaultPartitioner.java#L71)
-modulus the number of partitions on the topic[^kafkapartitions].
+turning that into a ["positive value" with some clever bit twiddling](https://github.com/apache/kafka/blob/2.8/clients/src/main/java/org/apache/kafka/common/utils/Utils.java#L1019-L1034) 
+and then modulus the number of partitions on the topic[^kafkapartitions].
 
 ```
-murmur2_32("mango").absoluteValue % 3  -> partition 0
-murmur2_32("banana").absoluteValue % 3 -> partition 1
-murmur2_32("apple").absoluteValue % 3  -> partition 1
-murmur2_32("lime").absoluteValue % 3   -> partition 0
-murmur2_32("grape").absoluteValue % 3  -> partition 2
-murmur2_32("pear").absoluteValue % 3   -> partition 2
+positiveValue(murmur2_32("grape") % 3 -> partition 0
+positiveValue(murmur2_32("lime") % 3 -> partition 0
+positiveValue(murmur2_32("banana") % 3 -> partition 1
+positiveValue(murmur2_32("apple") % 3 -> partition 1
+positiveValue(murmur2_32("mango") % 3 -> partition 2
+positiveValue(murmur2_32("cherry") % 3 -> partition 2
 ``` 
 
 ![Keys to Partitions](/images/2021/05/kafka_keys_to_partitions.png "Keys to Partitions"){: .center-image }
