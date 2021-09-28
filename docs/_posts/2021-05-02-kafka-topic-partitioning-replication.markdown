@@ -97,12 +97,12 @@ turning that into a ["positive value" with some clever bit twiddling](https://gi
 and then modulus the number of partitions on the topic[^kafkapartitions].
 
 ```
-positiveValue(murmur2_32("grape") % 3 -> partition 0
-positiveValue(murmur2_32("lime") % 3 -> partition 0
-positiveValue(murmur2_32("banana") % 3 -> partition 1
-positiveValue(murmur2_32("apple") % 3 -> partition 1
-positiveValue(murmur2_32("mango") % 3 -> partition 2
-positiveValue(murmur2_32("cherry") % 3 -> partition 2
+positiveValue(murmur2_32("grape")) % 3 -> partition 0
+positiveValue(murmur2_32("lime")) % 3 -> partition 0
+positiveValue(murmur2_32("banana")) % 3 -> partition 1
+positiveValue(murmur2_32("apple")) % 3 -> partition 1
+positiveValue(murmur2_32("mango")) % 3 -> partition 2
+positiveValue(murmur2_32("cherry")) % 3 -> partition 2
 ``` 
 
 ![Keys to Partitions](/images/2021/05/kafka_keys_to_partitions.png "Keys to Partitions"){: .center-image }
