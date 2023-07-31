@@ -20,16 +20,35 @@ Posts won't show up if they are dated in the future.
 
 # Testing/Running Locally
 
-Use [`direnv`](https://direnv.net/) to automatically `rbenv init -` into your current shell when in this directory.  
-You don't need to have `rbenv` in your global zsh/bash rc files
+As of 2023-07-06, `ruby-install` does [not work with OpenSSL 3.1](https://github.com/rvm/rvm/issues/5365), you'll want to explicitly `brew install openssl@3.0` to use that. 
 
-Install [`rbenv` and `jekyll`](https://jekyllrb.com/docs/installation/macos/)
+This will likely be fixed soon, but if you have a bunch of dependencies that are 
+on OpenSSL 3.1, it might be easiest to just wipe out `brew` and reinstall.
+
+
+Install [`chruby` and `jekyll`](https://jekyllrb.com/docs/installation/macos/)
 
 ```
-brew install rbenv
+brew install chruby ruby-install xz
 
-rbenv install 3.0.1
+ruby-install ruby 3.2.2
 ```
+
+You'll also want to put the bits that the install of `chruby` mentions in your shell rc file:
+
+```
+## brew install chruby ruby-install xz
+if [[ -f "/opt/homebrew/opt/chruby/share/chruby/chruby.sh" ]]; then
+  source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+fi
+
+## allows a .ruby-version file to be used to set the ruby version
+if [[ -f "/opt/homebrew/opt/chruby/share/chruby/auto.sh" ]]; then
+  source /opt/homebrew/opt/chruby/share/chruby/auto.sh
+fi
+```
+
+now, when you're in the root dir, `which ruby` should show that it is using `3.2.2`
 
 `jekyll` commands will be run in the `docs` directory (where the source for the blog is)
 
@@ -50,8 +69,3 @@ bundle exec jekyll serve --livereload
 ```
 
 Then go to http://127.0.0.1:4000
-
-
-
-
-

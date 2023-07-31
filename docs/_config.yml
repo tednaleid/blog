@@ -1,5 +1,4 @@
 title: Ted Naleid's Notes
-twitter_username: tednaleid
 github_username: tednaleid
 plugins:
   - jekyll-sitemap
@@ -7,7 +6,6 @@ plugins:
   - jekyll-redirect-from
 theme: minima
 google_analytics: UA-103670539-1
-
 
 header_pages:
   - presentations.md

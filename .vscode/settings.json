@@ -1,0 +1,9 @@
+{
+  "grammarly.selectors": [
+    {
+      "language": "markdown",
+      "scheme": "file",
+      "pattern": "docs/_posts/2023-07-07-understanding-kafka-compaction.markdown"
+    }
+  ]
+}

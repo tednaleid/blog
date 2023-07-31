@@ -4,7 +4,6 @@ title: About/Contact
 Please contact me if you have any questions.
 
 - e-mail: [contact@naleid.com](mailto:contact@naleid.com)
-- twitter: [@tednaleid](https://twitter.com/tednaleid)
 - github: [tednaleid](https://github.com/tednaleid)
 
 I’m also on [LinkedIn](https://www.linkedin.com/in/tednaleid/) but I only accept connections from people that I’ve actually met.
