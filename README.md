@@ -34,7 +34,8 @@ brew install chruby ruby-install xz
 ruby-install ruby 3.2.2
 ```
 
-You'll also want to put the bits that the install of `chruby` mentions in your shell rc file:
+
+If you want `chruby` to auto switch to the installed ruby version, add the following to your `~/.bash_profile` or `~/.zshrc`:
 
 ```
 ## brew install chruby ruby-install xz
@@ -46,6 +47,13 @@ fi
 if [[ -f "/opt/homebrew/opt/chruby/share/chruby/auto.sh" ]]; then
   source /opt/homebrew/opt/chruby/share/chruby/auto.sh
 fi
+```
+
+otherwise, you can manually source that file in your shell:
+
+```
+source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+source /opt/homebrew/opt/chruby/share/chruby/auto.sh
 ```
 
 now, when you're in the root dir, `which ruby` should show that it is using `3.2.2`
@@ -60,6 +68,11 @@ Now install the gems for jekyll and webrick
 
 ```shell
 bundle install
+```
+
+if that fails, you might need to run:
+```shell
+bundle update
 ```
 
 and you should be able to serve now (with livereload support built-in):
