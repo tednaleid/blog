@@ -105,7 +105,7 @@ Short answer:
 - [segment.ms](https://kafka.apache.org/documentation/#topicconfigs_segment.ms) (default: `604800000`, seven days) - change to `43200000` (12 hours)
 - [max.compaction.lag.ms](https://kafka.apache.org/documentation/#topicconfigs_max.compaction.lag.ms) (default: infinity) - change to `86400000` (24 hours)
 
-Changing `segment.ms` will close the open segment at least every 12 hours so that it is "dirty" and eligible to be compacted.  If this is not changed, slow-moving topics (less than `segment.ms=1GiB` of compacted data per week) will take one week to close the partition.
+Changing `segment.ms` will close the open segment at least every 12 hours so that it is "dirty" and eligible to be compacted.  If this is not changed, slow-moving topics (less than `segment.bytes=1GiB` of compacted data per week) will take one week to close the partition.
 
 Changing `max.compaction.lag.ms` to 24 hours will make this partition eligible for compactions once per day.  
 
