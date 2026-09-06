@@ -79,7 +79,7 @@ echo '{"a": {"b": {"c": {"d": "value"}}}}' | jq '.a.b.c.d'
 
 ### Compact Output (reverse-pretty printing) with `-c`
 
-This example uses a [heredoc](http://www.tldp.org/LDP/abs/html/here-docs.html) to give `jq` pretty-printed JSON and having it compact it to a single line:
+This example uses a [heredoc](https://www.tldp.org/LDP/abs/html/here-docs.html) to give `jq` pretty-printed JSON and having it compact it to a single line:
 
 input:
 ```

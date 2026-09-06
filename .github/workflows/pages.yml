@@ -1,0 +1,55 @@
+# ABOUTME: Builds the Jekyll site in docs/ and deploys it to GitHub Pages on every push to master.
+# ABOUTME: Replaces GitHub's legacy Pages build, which was frozen on Jekyll 3.10.
+
+name: pages
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# let an in-flight deploy finish rather than cancelling it midway
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  BUNDLE_GEMFILE: ${{ github.workspace }}/docs/Gemfile
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: just
+
+      - uses: actions/configure-pages@v6
+
+      # builds with JEKYLL_ENV=production and fails on a broken internal link
+      - run: just check
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: docs/_site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

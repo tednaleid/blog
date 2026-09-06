@@ -18,7 +18,7 @@ It expects to be piped a stream of urls that it will request in parallel:
 cat file_of_urls | ganda
 ```
 
-or if you're averse to [useless uses of `cat`](http://porkmail.org/era/unix/award.html#cat):
+or if you're averse to [useless uses of `cat`](https://porkmail.org/era/unix/award.html#cat):
 
 ```
 ganda < file_of_urls

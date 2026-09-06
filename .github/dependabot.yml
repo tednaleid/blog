@@ -1,0 +1,20 @@
+# ABOUTME: Groups dependency updates into one PR per ecosystem per week.
+# ABOUTME: Ungrouped updates produced a separate PR for each gem, which is why the old ones piled up.
+
+version: 2
+updates:
+  - package-ecosystem: bundler
+    directory: /docs
+    schedule:
+      interval: weekly
+    groups:
+      gems:
+        patterns: ["*"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]

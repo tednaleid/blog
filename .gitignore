@@ -1,3 +1,6 @@
+.DS_Store
+.direnv
 .idea
 .jekyll-cache
-_site
+_site*
+vendor

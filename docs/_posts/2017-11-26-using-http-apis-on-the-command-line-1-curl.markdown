@@ -14,7 +14,7 @@ This is part 1 of a series of posts on Using HTTP APIs on the command line:
 
 It has pretty [good docs on the web](https://ec.haxx.se/usingcurl.html) and an extensive `man curl` page.
 
-Example using [httpbin](http://httpbin.org/) (a great service that I'll use for a number of examples):
+Example using [httpbin](https://httpbin.org/) (a great service that I'll use for a number of examples):
 
 ```
 curl "http://httpbin.org/uuid"

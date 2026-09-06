@@ -1,84 +1,50 @@
 # blog
 
-found at: [http://www.naleid.com/](http://www.naleid.com)
+Source for [www.naleid.com](https://www.naleid.com).
 
+Jekyll source lives in `docs/`. Pushing to `master` triggers
+`.github/workflows/pages.yml`, which builds the site and deploys it to GitHub
+Pages. A push whose build or link check fails does not deploy.
 
-Updates happen to blog via github pages jekyll processing.  Push to this repo to update the blog, they should appear after a little bit.
+## Setup
 
-see:
-- https://help.github.com/articles/using-jekyll-as-a-static-site-generator-with-github-pages/
-- https://help.github.com/articles/configuring-jekyll/
-
-
-config is in docs/_config.yml
-
-To create a new post, create a new markdown file in docs/_posts/ with a header similar to other existing posts
-
-Posts won't show up if they are dated in the future.
-
-
-
-# Testing/Running Locally
-
-As of 2023-07-06, `ruby-install` does [not work with OpenSSL 3.1](https://github.com/rvm/rvm/issues/5365), you'll want to explicitly `brew install openssl@3.0` to use that. 
-
-This will likely be fixed soon, but if you have a bunch of dependencies that are 
-on OpenSSL 3.1, it might be easiest to just wipe out `brew` and reinstall.
-
-
-Install [`chruby` and `jekyll`](https://jekyllrb.com/docs/installation/macos/)
-
-```
-brew install chruby ruby-install xz
-
-ruby-install ruby 3.2.2
-```
-
-
-If you want `chruby` to auto switch to the installed ruby version, add the following to your `~/.bash_profile` or `~/.zshrc`:
-
-```
-## brew install chruby ruby-install xz
-if [[ -f "/opt/homebrew/opt/chruby/share/chruby/chruby.sh" ]]; then
-  source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
-fi
-
-## allows a .ruby-version file to be used to set the ruby version
-if [[ -f "/opt/homebrew/opt/chruby/share/chruby/auto.sh" ]]; then
-  source /opt/homebrew/opt/chruby/share/chruby/auto.sh
-fi
-```
-
-otherwise, you can manually source that file in your shell:
-
-```
-source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
-source /opt/homebrew/opt/chruby/share/chruby/auto.sh
-```
-
-now, when you're in the root dir, `which ruby` should show that it is using `3.2.2`
-
-`jekyll` commands will be run in the `docs` directory (where the source for the blog is)
+Requires [`mise`](https://mise.jdx.dev), [`just`](https://just.systems), and
+optionally [`direnv`](https://direnv.net).
 
 ```shell
-cd docs
+brew install mise just direnv
 ```
 
-Now install the gems for jekyll and webrick
+`mise` reads `.ruby-version` and supplies the pinned ruby. `direnv` reads
+`.envrc` and points `BUNDLE_GEMFILE` at `docs/Gemfile` so `bundle exec` works
+from any directory in the repo.
 
 ```shell
-bundle install
+direnv allow
+just bootstrap
 ```
 
-if that fails, you might need to run:
-```shell
-bundle update
-```
-
-and you should be able to serve now (with livereload support built-in):
+## Working on the blog
 
 ```shell
-bundle exec jekyll serve --livereload
+just                 # list every recipe
+just serve           # http://127.0.0.1:4000 with live reload
+just new "Post Title"  # create docs/_posts/YYYY-MM-DD-post-title.markdown
+just check           # build and validate internal links, what CI runs
 ```
 
-Then go to http://127.0.0.1:4000
+Posts dated in the future are not published. `just serve-drafts` renders them
+along with anything in `docs/_drafts`.
+
+Front matter needs only a `title`. Layouts are assigned by
+`jekyll-default-layout`, and `redirect_from` preserves URLs from the original
+`/blog/YYYY/MM/DD/slug` scheme.
+
+## Checking links
+
+`just check` validates links and images within the site and is fast enough to
+run on every commit. It ignores the outside world.
+
+`just links-external` follows every external link and flags any that are dead
+or still on `http`. It depends on other people's servers staying up, so it is
+run by hand rather than in CI.

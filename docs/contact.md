@@ -8,6 +8,6 @@ Please contact me if you have any questions.
 
 I’m also on [LinkedIn](https://www.linkedin.com/in/tednaleid/) but I only accept connections from people that I’ve actually met.
 
-All content (unless otherwise marked) is released under a [Creative Commons Attribution 3.0 United States License](http://creativecommons.org/licenses/by/3.0/us/).
+All content (unless otherwise marked) is released under a [Creative Commons Attribution 3.0 United States License](https://creativecommons.org/licenses/by/3.0/us/).
 
-<a rel="license" href="http://creativecommons.org/licenses/by/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/us/88x31.png"></a>
+<a rel="license" href="https://creativecommons.org/licenses/by/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/3.0/us/88x31.png"></a>

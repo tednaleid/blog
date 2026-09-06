@@ -1,0 +1,31 @@
+# ABOUTME: Runs `just check` on pull requests and non-master pushes to catch breakage before it merges.
+# ABOUTME: Pushes to master are checked and deployed by pages.yml instead.
+
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches-ignore: [master]
+
+permissions:
+  contents: read
+
+env:
+  BUNDLE_GEMFILE: ${{ github.workspace }}/docs/Gemfile
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: just
+
+      - run: just check

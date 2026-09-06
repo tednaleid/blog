@@ -1,12 +1,26 @@
 title: Ted Naleid's Notes
+description: >-
+  Notes on software engineering: Kafka, command line tooling, JVM performance,
+  and whatever else turns out to be worth writing down.
+url: https://www.naleid.com
+timezone: Etc/UTC
 github_username: tednaleid
+
+theme: minima
+
 plugins:
-  - jekyll-sitemap
+  - jekyll-default-layout
   - jekyll-feed
   - jekyll-redirect-from
-theme: minima
-google_analytics: UA-103670539-1
+  - jekyll-seo-tag
+  - jekyll-sitemap
 
 header_pages:
   - presentations.md
   - contact.md
+
+sass:
+  style: compressed
+  quiet_deps: true
+  silence_deprecations:
+    - import

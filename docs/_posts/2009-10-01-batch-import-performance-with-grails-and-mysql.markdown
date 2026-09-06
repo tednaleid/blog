@@ -125,7 +125,7 @@ class BookService {
 
 When you run this code, the first thing you notice is how slow it is.  The first 1000 records aren't that bad.  On my old laptop they take about 7 seconds to insert.  After that things get slower and slower, books 10,000 to 11,000 take 20 seconds to insert.  Importing gets progressively worse as time goes on.  
 
-<img src="http://naleid.com/images/2009/09/performance_naive.png" alt="Naive Performance" />
+<img src="/images/2009/09/performance_naive.png" alt="Naive Performance" />
 
 Yikes!  It takes 2 hours and 36 minutes to import 100k records?  Over 3 minutes for the last thousand books to get imported? That can't be right.
 
@@ -159,13 +159,13 @@ trace 'org.hibernate.SQL'
 
 The <a href="http://grails.org/plugin/p6spy">p6spy grails plugin</a> inserts a proxy between your database driver classes and Grails.  Because of this, it knows the full query, including the filled in query parameters and some timing information.
 
-This is useful by itself, but you can have the p6spy plugin log it's messages to a log4j socket appender that talks to the <a href="http://sourceforge.net/projects/sqlprofiler/">JDBC SQL Profiler</a> which will aggregate all of the information and help you decide where you've got slow queries and need indexes.
+This is useful by itself, but you can have the p6spy plugin log it's messages to a log4j socket appender that talks to the <a href="https://sourceforge.net/projects/sqlprofiler/">JDBC SQL Profiler</a> which will aggregate all of the information and help you decide where you've got slow queries and need indexes.
 
 Mike Hugo has a <a href="http://www.piragua.com/2009/06/17/grails-p6spy-and-sql-profiler/">great post on using the p6spy plugin with the JDBC SQL profiler</a>.
 
 <h4><small>Turn on the MySQL Slow Query Log</small></h4>
 
-If you're using a recent version of MySQL, there's an easy, built-in way to see which queries are slow and which queries aren't using indexes: the <a href="http://dev.mysql.com/doc/refman/5.1/en/slow-query-log.html">slow query log</a>.
+If you're using a recent version of MySQL, there's an easy, built-in way to see which queries are slow and which queries aren't using indexes: the <a href="https://dev.mysql.com/doc/refman/5.1/en/slow-query-log.html">slow query log</a>.
 
 To turn it on, you simply need to add a few lines to your mysql cnf file (by default on OSX just create a file at /etc/my.cnf and it will get loaded):
 
@@ -201,7 +201,7 @@ These steps should get you a long way towards figuring out which tables need ind
 
 <h4><small>Turn on the MySQL General Query log</small></h4>
 
-MySQL has an additional query log called the <a href="http://dev.mysql.com/doc/refman/5.1/en/query-log.html">general query log</a>.  It logs <i>everything</i> that comes into MySQL and is extremely noisy.  One benefit of it though is that it gives you the full query with all parameters, so it's more useful than turning on grails SQL trace log and potentially a little quicker to set up than the p6spy plugin.
+MySQL has an additional query log called the <a href="https://dev.mysql.com/doc/refman/5.1/en/query-log.html">general query log</a>.  It logs <i>everything</i> that comes into MySQL and is extremely noisy.  One benefit of it though is that it gives you the full query with all parameters, so it's more useful than turning on grails SQL trace log and potentially a little quicker to set up than the p6spy plugin.
 
 You can enable it by putting this in your my.cnf:
 
@@ -211,7 +211,7 @@ general_log=1
 
 <h4><small>Suggested Reading for MySQL indexes</small></h4>
 
-If you haven't created many indexes before, I highly suggest reading <a href="http://www.mysqlperformanceblog.com/2009/09/12/3-ways-mysql-uses-indexes/">this post on indexes on the mysql high performance blog</a>.  The executive summary is that multi-key indexes tailored to your query have a performance edge over individual key indexes on each of the fields.  If you're executing a query enough times, it might be worth creating a multi-key index like we have above.
+If you haven't created many indexes before, I highly suggest reading <a href="https://www.mysqlperformanceblog.com/2009/09/12/3-ways-mysql-uses-indexes/">this post on indexes on the mysql high performance blog</a>.  The executive summary is that multi-key indexes tailored to your query have a performance edge over individual key indexes on each of the fields.  If you're executing a query enough times, it might be worth creating a multi-key index like we have above.
 
 
 <h3>MySQL Database Engines</h3>
@@ -259,7 +259,7 @@ ALTER TABLE book ENGINE = INNODB;
 
 Adding an index and modifying the storage engine of our example book table to InnoDB make our sample app 25-30% faster.  A nice boost from where we were originally, but things are still way too slow:
 
-<img src="http://naleid.com/images/2009/09/performance_with_index.png" alt="Performance with Index" />
+<img src="/images/2009/09/performance_with_index.png" alt="Performance with Index" />
 
 Adding indexes to the database drops the database CPU utilization to almost nothing, but grails is still pegged and it still gets much slower over time.  
 
@@ -315,7 +315,7 @@ class BookService {
 
 This change makes everything much better.  All 100,000 books get inserted in 3 minutes, the same time that it took the naive example to insert the last 1,000 books.
 
-<img src="http://naleid.com/images/2009/09/performance_with_index_and_cleanup.png" alt="Performance with Index and Cleanup" />
+<img src="/images/2009/09/performance_with_index_and_cleanup.png" alt="Performance with Index and Cleanup" />
 
 Also, because MySQL is now properly using indexes, the load on it is very light.  If we're looking for even more speed improvement, this would allow us to split our work up into batches and to make multiple BookService calls (potentially on different web servers).  Because we've switched to using InnoDB, we're now working with row-level locking, which isn't hostile to this approach unlike MyISAM and it's full table locking on Insert/Update.
 
@@ -335,7 +335,4 @@ There are a number of other things that could be looked at to further speed up b
 
 Be sure to weigh the cost of making changes in each of these areas, and run benchmark tests before committing to them.  You'll often find that what you think is the bottleneck, isn't.   Speed is a feature, but you need to balance it with the costs to achieve it.
 
-
-<script type="text/javascript">var dzone_style = '1';</script>
-<script language="javascript" src="http://widgets.dzone.com/widgets/zoneit.js"></script> 
 

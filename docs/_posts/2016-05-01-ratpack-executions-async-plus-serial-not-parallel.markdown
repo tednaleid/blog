@@ -3,7 +3,7 @@ title: "Ratpack Executions: Async + Serial, not Parallel"
 redirect_from: "/blog/2016/05/01/ratpack-executions-async-plus-serial-not-parallel"
 ---
 
-Developers familiar with <a href="http://ratpack.io">Ratpack</a> know that it is a non-blocking and asynchronous framework that's built on top of <a href="http://netty.io">Netty</a>.  It uses a small pool of "compute" threads (by default `2 * <# of CPUs>`) to do all of the non-blocking processing of thousands of requests a second.
+Developers familiar with <a href="https://ratpack.io">Ratpack</a> know that it is a non-blocking and asynchronous framework that's built on top of <a href="https://netty.io">Netty</a>.  It uses a small pool of "compute" threads (by default `2 * <# of CPUs>`) to do all of the non-blocking processing of thousands of requests a second.
 
 The documentation (and <a href="http://ldaley.com/post/97376696242/ratpack-execution-model-part-1">blog posts</a> and Dan Woods' excellent <em><a href="http://shop.oreilly.com/product/0636920037545.do">Learning Ratpack</a></em>) all discuss another benefit of Ratpack: <strong>serialized execution of asynchronous code</strong>.
 
@@ -20,7 +20,7 @@ To understand why this is, we need to discuss some of the details of Ratpack's a
 
 ### 1. "Compute" Thread Pool
 
-This thread pool is where all requests are handled, and are where all async, non-blocking code in your app executes. Under the covers, it is a Netty epoll <a href="http://netty.io/4.0/api/io/netty/channel/EventLoopGroup.html">EventLoopGroup</a>, so it is very fast as long as you don't run any blocking operations on it (on non-linux boxes it uses NIO instead of epoll).
+This thread pool is where all requests are handled, and are where all async, non-blocking code in your app executes. Under the covers, it is a Netty epoll <a href="https://netty.io/4.0/api/io/netty/channel/EventLoopGroup.html">EventLoopGroup</a>, so it is very fast as long as you don't run any blocking operations on it (on non-linux boxes it uses NIO instead of epoll).
 
 The compute thread pool size <a href="https://github.com/ratpack/ratpack/blob/43ab4be15c32a57cd07cc342149359430417cf78/ratpack-core/src/main/java/ratpack/exec/internal/DefaultExecController.java#L51">by default</a> is <code>2 * # of CPUs</code>.  Though you can easily change it with a config value:
 
@@ -377,7 +377,7 @@ You are also giving up some of the ordering guarantees that Ratpack gives you as
 
 ## Other Notes About RxJava/Ratpack 
 
-If you're familiar with RxJava, you might have seen information on using a <a href="http://reactivex.io/documentation/scheduler.html">Scheduler</a> along with the `scheduleOn` and `observeOn` methods.  We don't have direct access to a scheduler of ratpack's compute/blocking thread pools so we can't use these methods to get our work done in parallel.  Currently, `forkEach`/`bindExec` is the best way to get your `Observable` code to run in parallel.
+If you're familiar with RxJava, you might have seen information on using a <a href="https://reactivex.io/documentation/scheduler.html">Scheduler</a> along with the `scheduleOn` and `observeOn` methods.  We don't have direct access to a scheduler of ratpack's compute/blocking thread pools so we can't use these methods to get our work done in parallel.  Currently, `forkEach`/`bindExec` is the best way to get your `Observable` code to run in parallel.
 
 
 ## Understanding Ratpack Executions for Yourself
