@@ -157,11 +157,11 @@ trace 'org.hibernate.SQL'
 
 <h4><small>Install the p6spy plugin and JDBC SQL profiler</small></h4>
 
-The <a href="http://grails.org/plugin/p6spy">p6spy grails plugin</a> inserts a proxy between your database driver classes and Grails.  Because of this, it knows the full query, including the filled in query parameters and some timing information.
+The <a href="https://web.archive.org/web/20190802013913/http://grails.org/plugin/p6spy">p6spy grails plugin</a> inserts a proxy between your database driver classes and Grails.  Because of this, it knows the full query, including the filled in query parameters and some timing information.
 
 This is useful by itself, but you can have the p6spy plugin log it's messages to a log4j socket appender that talks to the <a href="https://sourceforge.net/projects/sqlprofiler/">JDBC SQL Profiler</a> which will aggregate all of the information and help you decide where you've got slow queries and need indexes.
 
-Mike Hugo has a <a href="http://www.piragua.com/2009/06/17/grails-p6spy-and-sql-profiler/">great post on using the p6spy plugin with the JDBC SQL profiler</a>.
+Mike Hugo has a <a href="https://web.archive.org/web/20110824041539/http://www.piragua.com/2009/06/17/grails-p6spy-and-sql-profiler/">great post on using the p6spy plugin with the JDBC SQL profiler</a>.
 
 <h4><small>Turn on the MySQL Slow Query Log</small></h4>
 
@@ -269,7 +269,7 @@ At this point, some people might be inclined to believe the myth that "grails is
 
 Don't go there yet!  It's only slow if you don't understand what's actually going on under the covers.
 
-After reading through a couple of very <a href="http://burtbeckwith.com/blog/?p=73">helpful</a> <a href="http://burtbeckwith.com/blog/?p=169">posts</a> by Burt Beckwith, and reading through the <a href="http://docs.jboss.org/hibernate/stable/core/reference/en/html/batch.html">Hibernate chapter on batch processing</a>, we have all of the information we need to speed things up significantly.
+After reading through a couple of very <a href="https://web.archive.org/web/20080912041347/http://burtbeckwith.com/blog/?p=73">helpful</a> <a href="https://web.archive.org/web/20240413010111/https://burtbeckwith.com/blog/?p=169">posts</a> by Burt Beckwith, and reading through the <a href="https://docs.hibernate.org/orm/3.5/reference/en/html/batch.html">Hibernate chapter on batch processing</a>, we have all of the information we need to speed things up significantly.
 
 <h4><small>Use a Monitoring Tool to Watch Memory/CPU usage Over Time</small></h4>
 
@@ -279,7 +279,7 @@ If you don't have your code instrumented with timing logic already in it, it's e
 
 <h4><small>The Culprits: Hibernate First-Level Cache and Grails Validation Cache</small></h4>
 
-I <a href="http://burtbeckwith.com/blog/?p=73">found on Burt Beckwith's blog</a>, that there are 2 separate leaks, one of them is in the hibernate first-level cache, the other is a map that Grails uses for domain object validation errors.  
+I <a href="https://web.archive.org/web/20080912041347/http://burtbeckwith.com/blog/?p=73">found on Burt Beckwith's blog</a>, that there are 2 separate leaks, one of them is in the hibernate first-level cache, the other is a map that Grails uses for domain object validation errors.  
 
 Normally, a grails hibernate session executes something quickly and returns.  During importing, we do a ton of processing, all with the same hibernate session.  All of these objects that would normally be garbage collected when the session closed are piling up.
 

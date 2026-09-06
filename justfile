@@ -45,10 +45,12 @@ links:
         --swap-urls 'https\://www\.naleid\.com:'
 
 # audit every external link and flag http:// ones, slow and depends on other people's servers
+# external #anchors are not checked: docs sites that build them in JS report false failures
 [working-directory('docs')]
 links-external:
     bundle exec htmlproofer _site \
         --allow-hash-href \
+        --no-check-external-hash \
         --checks Links,Images,Scripts \
         --swap-urls 'https\://www\.naleid\.com:' \
         --ignore-status-codes 403,429 \

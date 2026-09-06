@@ -12,7 +12,7 @@ This is part 1 of a series of posts on Using HTTP APIs on the command line:
 
 `curl` is a command-line app that lets you make requests (http, as well as a variety of other types) and view/save the results.
 
-It has pretty [good docs on the web](https://ec.haxx.se/usingcurl.html) and an extensive `man curl` page.
+It has pretty [good docs on the web](https://everything.curl.dev/usingcurl/) and an extensive `man curl` page.
 
 Example using [httpbin](https://httpbin.org/) (a great service that I'll use for a number of examples):
 
@@ -180,7 +180,7 @@ curl -b cookie.txt "http://httpbin.org/cookies"
 ```
 
 ### HTTPS SSL/TLS
-HTTPS endpoint certificate can be easily ignored (if you know you don't care about cert verification) with `-k` switch for quick manual commands. If you want to use and verify certificates, that is a longer topic that is [covered in the official docs](https://ec.haxx.se/usingcurl-tls.html).
+HTTPS endpoint certificate can be easily ignored (if you know you don't care about cert verification) with `-k` switch for quick manual commands. If you want to use and verify certificates, that is a longer topic that is [covered in the official docs](https://everything.curl.dev/usingcurl/tls.html).
 
 
 ### Custom request timing output

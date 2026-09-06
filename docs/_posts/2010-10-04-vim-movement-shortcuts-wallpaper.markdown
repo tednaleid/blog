@@ -14,4 +14,4 @@ You can <a href="https://raw.githubusercontent.com/tednaleid/vim-shortcuts-wallp
 
 <a href="https://raw.githubusercontent.com/tednaleid/vim-shortcuts-wallpaper/main/vim-shortcuts.png"><img src="https://raw.githubusercontent.com/tednaleid/vim-shortcuts-wallpaper/main/vim-shortcuts.png" alt="Vim Shortcuts Wallpaper" height="600"/></a>
 
-I've also got the original OmniGraffle file that I used to create it <a href="http://bitbucket.org/tednaleid/vim-shortcut-wallpaper/src">checked in to a GitHub repo</a> if anyone feels like remixing it or adding their own shortcuts or customizations to it.
+I've also got the original OmniGraffle file that I used to create it <a href="https://github.com/tednaleid/vim-shortcuts-wallpaper">checked in to a GitHub repo</a> if anyone feels like remixing it or adding their own shortcuts or customizations to it.

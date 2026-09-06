@@ -5,7 +5,7 @@ redirect_from: "/blog/2016/05/01/ratpack-executions-async-plus-serial-not-parall
 
 Developers familiar with <a href="https://ratpack.io">Ratpack</a> know that it is a non-blocking and asynchronous framework that's built on top of <a href="https://netty.io">Netty</a>.  It uses a small pool of "compute" threads (by default `2 * <# of CPUs>`) to do all of the non-blocking processing of thousands of requests a second.
 
-The documentation (and <a href="http://ldaley.com/post/97376696242/ratpack-execution-model-part-1">blog posts</a> and Dan Woods' excellent <em><a href="http://shop.oreilly.com/product/0636920037545.do">Learning Ratpack</a></em>) all discuss another benefit of Ratpack: <strong>serialized execution of asynchronous code</strong>.
+The documentation (and <a href="https://web.archive.org/web/20221206081950/https://ldaley.com/post/97376696242/ratpack-execution-model-part-1">blog posts</a> and Dan Woods' excellent <em><a href="https://www.oreilly.com/library/view/learning-ratpack/9781491921654/">Learning Ratpack</a></em>) all discuss another benefit of Ratpack: <strong>serialized execution of asynchronous code</strong>.
 
 Even though I'd read about Ratpack's serial execution model, I had not fully internalized the consequences of that feature of Ratpack until I dug in for myself. My previous async programming had been NodeJS and Scala-based and I was using that as my mental model for how Ratpack would behave.
 
@@ -321,7 +321,7 @@ This kind of behavior is a good default for Ratpack to have as it makes things v
 
 ## Parallelism Must be Explicitly Requested
 
-If you want your reactive stream to be processed in parallel, but the work is still async non-blocking work, you can add the <a href="https://ratpack.io/manual/current/api/ratpack/rx/RxRatpack.html#forkEach-rx.Observable-">`forkEach`</a> and <a href="https://ratpack.io/manual/current/api/ratpack/rx/RxRatpack.html#bindExec-rx.Observable-">`bindExec`</a> methods into your stream.
+If you want your reactive stream to be processed in parallel, but the work is still async non-blocking work, you can add the <a href="https://ratpack.io/manual/1.3.3/api/ratpack/rx/RxRatpack.html#forkEach-rx.Observable-">`forkEach`</a> and <a href="https://ratpack.io/manual/1.3.3/api/ratpack/rx/RxRatpack.html#bindExec-rx.Observable-">`bindExec`</a> methods into your stream.
 
 `forkEach` will schedule each observable value to be run on <a href="https://github.com/ratpack/ratpack/blob/73d3a3d9ff03291b7b249fc1c6c7c27086ef5456/ratpack-rx/src/main/java/ratpack/rx/RxRatpack.java#L699">the next available compute thread</a>.
 
@@ -386,4 +386,4 @@ If you're new to async/non-blocking programming, there will be a bit of a learni
 
 Hopefully this post has helped given you some tools and places to start exploring for yourself.
 
-I'd also highly recommend joining the <a href="https://slack-signup.ratpack.io/">Ratpack Slack Channel</a>, I've gotten a huge amount of help from Ratpack team members as well as others in the community.  Simply lurking there has been extremely valuable, and I've always gotten a great response to getting my questions answered.
+I'd also highly recommend joining the <a href="https://slack.ratpack.io/">Ratpack Slack Channel</a>, I've gotten a huge amount of help from Ratpack team members as well as others in the community.  Simply lurking there has been extremely valuable, and I've always gotten a great response to getting my questions answered.
