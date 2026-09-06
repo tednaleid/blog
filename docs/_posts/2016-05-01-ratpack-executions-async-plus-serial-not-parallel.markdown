@@ -386,4 +386,4 @@ If you're new to async/non-blocking programming, there will be a bit of a learni
 
 Hopefully this post has helped given you some tools and places to start exploring for yourself.
 
-I'd also highly recommend joining the <a href="https://slack.ratpack.io/">Ratpack Slack Channel</a>, I've gotten a huge amount of help from Ratpack team members as well as others in the community.  Simply lurking there has been extremely valuable, and I've always gotten a great response to getting my questions answered.
+I'd also highly recommend the <a href="https://github.com/ratpack/ratpack">Ratpack project on GitHub</a>, I've gotten a huge amount of help from Ratpack team members as well as others in the community.  Simply lurking there has been extremely valuable, and I've always gotten a great response to getting my questions answered.
